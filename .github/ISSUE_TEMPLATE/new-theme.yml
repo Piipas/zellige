@@ -1,0 +1,42 @@
+name: New theme
+description: Propose a new colour palette.
+labels: [theme]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Themes are a single object in `lib/render.ts`, so you're very welcome to open a pull request directly.
+        See [CONTRIBUTING.md](https://github.com/Piipas/zellige/blob/main/CONTRIBUTING.md#adding-a-theme-a-great-first-contribution) for tips.
+  - type: input
+    id: name
+    attributes:
+      label: Theme name
+      description: Lowercase, ideally a place with a tile tradition.
+      placeholder: chefchaouen
+    validations:
+      required: true
+  - type: textarea
+    id: colours
+    attributes:
+      label: Colours
+      description: Hex values for each role.
+      value: |
+        grout:
+        empty:
+        levels (1 → 4):
+        cross:
+        heart:
+        text:
+    validations:
+      required: true
+  - type: textarea
+    id: inspiration
+    attributes:
+      label: Inspiration
+      description: A photo, place or tilework that inspired it (optional).
+  - type: checkboxes
+    id: pr
+    attributes:
+      label: Pull request
+      options:
+        - label: I'd like to open the pull request myself
