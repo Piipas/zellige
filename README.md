@@ -1,5 +1,3 @@
-<!-- After the first deploy, replace "your-deployment.vercel.app" below with your real domain. -->
-
 # zellige
 
 **Your GitHub contribution graph, laid as Moroccan zellige tilework.**
@@ -8,22 +6,22 @@ Every day becomes an eight-point star (*khatam*) set in grout, with small cross 
 
 ![zellige contribution graph](docs/preview-fes.svg)
 
-**[Live demo →](https://your-deployment.vercel.app)** Enter a username, pick a palette, copy the snippet.
+**[Live demo →](https://zellige-nine.vercel.app)** Enter a username, pick a palette, copy the snippet.
 
 ## Add it to your README
 
 Replace `USERNAME` with your GitHub username:
 
 ```markdown
-![zellige](https://your-deployment.vercel.app/api/zellige?user=USERNAME)
+![zellige](https://zellige-nine.vercel.app/api/zellige?user=USERNAME)
 ```
 
 To follow the reader's light or dark mode, use a `<picture>`:
 
 ```html
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="https://your-deployment.vercel.app/api/zellige?user=USERNAME&theme=night">
-  <img alt="zellige contribution graph" src="https://your-deployment.vercel.app/api/zellige?user=USERNAME">
+  <source media="(prefers-color-scheme: dark)" srcset="https://zellige-nine.vercel.app/api/zellige?user=USERNAME&theme=night">
+  <img alt="zellige contribution graph" src="https://zellige-nine.vercel.app/api/zellige?user=USERNAME">
 </picture>
 ```
 
