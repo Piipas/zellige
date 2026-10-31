@@ -1,6 +1,7 @@
 import { DEFAULT_THEME, type ThemeName } from "./render";
 
 export const REPO_URL = "https://github.com/Piipas/zellige";
+export const AUTHOR = { name: "Ismail Baalouk", url: "https://github.com/Piipas" };
 
 /**
  * Public base URL used in README snippets and metadata.

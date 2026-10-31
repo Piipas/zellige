@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { StarMark } from "@/components/StarMark";
 import { CELL, CROSS_OPACITY, STAR_R, THEME_NAMES, THEMES, layout, type Theme, type ThemeName, type Tile } from "@/lib/render";
-import { REPO_URL } from "@/lib/site";
+import { AUTHOR, REPO_URL } from "@/lib/site";
 import { computeStats } from "@/lib/stats";
 import { normalizeUsername } from "@/lib/username";
 import { errorView, loadCalendar, optionsQuery, type View, type WallData } from "./data";
@@ -268,6 +268,8 @@ export function Wall({ data: initialData, view: initialView, demo, initialTheme,
           {hover && view.kind === "user" && <Tooltip tile={hover} g={g} scale={geo.s} ink={ink} paper={t.grout} />}
         </div>
         {view.kind === "demo" && <p className="text-center text-xs tracking-wide uppercase opacity-50">a sample year</p>}
+        {/* On smaller screens the dock owns the bottom edge, so the credit sits under the wall. */}
+        <Credit className="justify-center pt-2 lg:hidden" />
       </main>
 
       <footer className="pointer-events-none fixed inset-x-0 bottom-0 z-20 flex justify-center px-3 pb-5">
@@ -332,10 +334,12 @@ export function Wall({ data: initialData, view: initialView, demo, initialTheme,
         )}
       </AnimatePresence>
 
-      <a
-        href={REPO_URL}
-        className="fixed right-4 bottom-6 z-20 hidden text-xs opacity-50 hover:opacity-100 lg:block"
-      >
+      <p className="fixed bottom-6 left-6 z-20 hidden text-xs lg:block">
+        <a href={AUTHOR.url} className="opacity-60 transition-opacity hover:opacity-100">
+          Made by <span className="font-semibold">{AUTHOR.name}</span>
+        </a>
+      </p>
+      <a href={REPO_URL} className="fixed right-6 bottom-6 z-20 hidden text-xs opacity-60 transition-opacity hover:opacity-100 lg:block">
         Source on GitHub
       </a>
     </div>
@@ -441,6 +445,20 @@ function Tooltip({ tile, g, scale, ink, paper }: { tile: Tile; g: ReturnType<typ
       <b>{count === 0 ? "No" : count.toLocaleString("en-US")} {count === 1 ? "contribution" : "contributions"}</b>
       <span className="opacity-70"> on {dateFormat.format(new Date(`${date}T00:00:00Z`))}</span>
     </div>
+  );
+}
+
+function Credit({ className = "" }: { className?: string }) {
+  return (
+    <p className={`flex gap-2 text-xs ${className}`}>
+      <a href={AUTHOR.url} className="opacity-60 transition-opacity hover:opacity-100">
+        Made by <span className="font-semibold">{AUTHOR.name}</span>
+      </a>
+      <span className="opacity-30">·</span>
+      <a href={REPO_URL} className="opacity-60 transition-opacity hover:opacity-100">
+        Source
+      </a>
+    </p>
   );
 }
 

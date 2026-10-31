@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
-import { siteUrl } from "@/lib/site";
+import { AUTHOR, siteUrl } from "@/lib/site";
 import "./globals.css";
 
 const geist = Geist({ variable: "--font-geist", subsets: ["latin"] });
@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   },
   description:
     "Turn any GitHub contribution graph into Moroccan zellige tilework, with an animated SVG for your profile README.",
+  authors: [AUTHOR],
+  creator: AUTHOR.name,
 };
 
 export const viewport: Viewport = {

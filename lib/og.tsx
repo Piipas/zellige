@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { CELL, PAD, render, THEMES, TOP, type Day } from "./render";
+import { AUTHOR } from "./site";
 
 export const OG_SIZE = { width: 1200, height: 630 };
 
@@ -35,7 +36,10 @@ export function ogImage({ heading, subheading, weeks }: { heading: string; subhe
           // eslint-disable-next-line @next/next/no-img-element
           <img src={graph} width={graphWidth} height={Math.round(graphWidth * aspect)} alt="" />
         )}
-        <div style={{ display: "flex", fontSize: 28, color: t.levels[2], fontWeight: 600 }}>zellige</div>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", fontSize: 28 }}>
+          <div style={{ color: t.levels[2], fontWeight: 600 }}>zellige</div>
+          <div style={{ color: t.text, fontSize: 24 }}>{`by ${AUTHOR.name}`}</div>
+        </div>
       </div>
     ),
     OG_SIZE,
