@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Fraunces, Geist, Geist_Mono } from "next/font/google";
 import { AUTHOR, siteUrl } from "@/lib/site";
@@ -26,7 +27,10 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${geist.variable} ${geistMono.variable} ${fraunces.variable} antialiased`}>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
