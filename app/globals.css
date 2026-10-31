@@ -29,7 +29,8 @@ body {
   background: color-mix(in srgb, var(--color-ochre) 30%, transparent);
 }
 
-:focus-visible {
+/* Text fields show focus on their own container instead (see the search pill). */
+:focus-visible:not(input, textarea) {
   outline: 2px solid var(--color-majorelle);
   outline-offset: 2px;
 }

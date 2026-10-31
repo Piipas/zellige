@@ -4,7 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
 import { useCallback, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { StarMark } from "@/components/StarMark";
-import { CELL, CROSS_OPACITY, STAR_R, THEME_NAMES, THEMES, layout, type ThemeName, type Tile } from "@/lib/render";
+import { CELL, CROSS_OPACITY, STAR_R, THEME_NAMES, THEMES, layout, type Theme, type ThemeName, type Tile } from "@/lib/render";
 import { REPO_URL } from "@/lib/site";
 import { computeStats } from "@/lib/stats";
 import { normalizeUsername } from "@/lib/username";
@@ -54,13 +54,14 @@ export function Wall({ data: initialData, view: initialView, demo, initialTheme,
   const [notice, setNotice] = useState<string | null>(null);
   const [sheet, setSheet] = useState(false);
   const [hover, setHover] = useState<Tile | null>(null);
+  const clearHover = useCallback(() => setHover(null), []);
 
   const motionOn = animateOn && !reduceMotion;
   const m = useMemo(() => layout(data.weeks, { user: data.login, total: data.total, theme }), [data, theme]);
   const g = useMemo(() => grid(m.weeks.length, vertical), [m.weeks.length, vertical]);
   const stats = useMemo(() => computeStats(data.weeks, data.total), [data]);
-  const tiles = useMemo(() => m.groups.flatMap((group) => group.tiles), [m]);
   const t = m.theme;
+  const tiles = useMemo(() => withFillers(m.groups.flatMap((group) => group.tiles), m.weeks.length, t), [m, t]);
   const { ink } = inkFor(t);
 
   // ---- URL ----------------------------------------------------------------
@@ -172,7 +173,7 @@ export function Wall({ data: initialData, view: initialView, demo, initialTheme,
             e.preventDefault();
             void lookUp(query);
           }}
-          className="relative flex items-center gap-1 rounded-full border py-1.5 pr-1.5 pl-4 backdrop-blur-md"
+          className="relative flex items-center gap-1 rounded-full border py-1.5 pr-1.5 pl-4 backdrop-blur-md transition-shadow focus-within:ring-3 focus-within:ring-current/15"
           style={{ borderColor: `${ink}2b`, background: `${t.grout}cc` }}
         >
           <span className="opacity-60">@</span>
@@ -247,7 +248,7 @@ export function Wall({ data: initialData, view: initialView, demo, initialTheme,
                     gen={gen}
                     waveDelay={g.fromSearch(tile.w, tile.d) * WAVE_S_PER_TILE}
                     animate={motionOn}
-                    onHover={setHover}
+                    onHover={tile.day.date ? setHover : clearHover}
                   />
                 );
               })}
@@ -404,6 +405,23 @@ function Headline({ view, data, stats }: { view: View; data: WallData; stats: Re
 }
 
 const days = (n: number) => `${n} ${n === 1 ? "day" : "days"}`;
+
+/**
+ * The year starts and ends mid-week, so the first and last columns are short.
+ * Fill those cells with plain tiles (no date, no tooltip) so the panel is a
+ * full rectangle. They go first, in the empty layer, and flip like the rest.
+ */
+function withFillers(tiles: Tile[], cols: number, t: Theme): Tile[] {
+  const taken = new Set(tiles.map((tile) => `${tile.w}-${tile.d}`));
+  const fillers: Tile[] = [];
+  for (let w = 0; w < cols; w++) {
+    for (let d = 0; d < 7; d++) {
+      if (taken.has(`${w}-${d}`)) continue;
+      fillers.push({ day: { date: "", count: 0, level: 0 }, w, d, cx: 0, cy: 0, fill: t.empty, heart: false, label: "" });
+    }
+  }
+  return [...fillers, ...tiles];
+}
 
 const dateFormat = new Intl.DateTimeFormat("en-US", { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
