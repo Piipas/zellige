@@ -57,3 +57,9 @@ export function sampleCalendar(seed = 7, end = "2026-10-31"): { total: number; w
   }
   return { total: days.reduce((sum, d) => sum + d.count, 0), weeks };
 }
+
+/** Same shape as the sample year with every day empty: a blank wall. */
+export function emptyCalendar(): { total: number; weeks: Day[][] } {
+  const { weeks } = sampleCalendar();
+  return { total: 0, weeks: weeks.map((week) => week.map((d) => ({ ...d, count: 0, level: 0 as const }))) };
+}

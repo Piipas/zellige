@@ -33,3 +33,20 @@ body {
   outline: 2px solid var(--color-majorelle);
   outline-offset: 2px;
 }
+
+/* Busiest days' hearts breathe slowly, like the README image. */
+.zg-pulse {
+  animation: zg-pulse 3.2s ease-in-out 1.6s infinite;
+}
+
+@keyframes zg-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .zg-pulse {
+    animation: none;
+  }
+}
